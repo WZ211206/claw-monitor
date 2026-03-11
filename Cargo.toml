@@ -18,3 +18,5 @@ ratatui = "0.26"
 crossterm = "0.27"
 # 时间处理
 chrono = "0.4"
+# 随机数生成 (修复 Error E0433)
+fastrand = "2.0"

@@ -12,8 +12,8 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::{
-    backend::{Backend, CrosstermBackend},
-    layout::{Constraint, Direction, Layout, Rect},
+    backend::CrosstermBackend,
+    layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Line, Span},
     widgets::{Block, Borders, BarChart, List, ListItem, Paragraph},
@@ -21,7 +21,7 @@ use ratatui::{
 };
 use serde_json::Value;
 use std::{error::Error, io, net::SocketAddr, sync::Arc, time::Duration};
-use tokio::sync::mpsc::{self, UnboundedReceiver, UnboundedSender};
+use tokio::sync::mpsc::UnboundedSender; // 移除了未使用的 self 和 UnboundedReceiver
 
 // ==========================================
 // 1. 数据模型与系统状态定义
@@ -161,7 +161,7 @@ async fn handle_request(
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     // 初始化无界通道，用于 Proxy 和 UI 之间的通信
-    let (tx, mut rx) = mpsc::unbounded_channel();
+    let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel();
 
     // 在另一个 Tokio 任务中启动后台代理服务器
     tokio::spawn(async move {
